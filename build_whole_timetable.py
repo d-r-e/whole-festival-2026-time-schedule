@@ -123,10 +123,13 @@ TEMPLATE = r'''<!doctype html>
 if (new URLSearchParams(location.search).has('embed')) document.body.classList.add('embedded');
 const events = __SCHEDULE_DATA__;
 const days = ["Friday","Saturday","Sunday","Monday"];
+const festivalDates = {17:"Friday",18:"Saturday",19:"Sunday",20:"Monday"};
 const key = 'whole-2026-custom-schedule';
 const paletteKey = 'whole-2026-palette';
 const palettes = { acid:{accent:'#c6ff62',dark:'#172100',glow:'#1a2a20',hue:88}, ocean:{accent:'#6edbff',dark:'#002333',glow:'#102838',hue:197}, sunset:{accent:'#ffb56b',dark:'#351500',glow:'#322016',hue:27}, violet:{accent:'#d7a5ff',dark:'#29103b',glow:'#271c35',hue:278} };
-let day = days.find(d => events.some(e => e.day === d)) || days[0];
+const today = new Date();
+const currentFestivalDay = today.getFullYear() === 2026 && today.getMonth() === 6 ? festivalDates[today.getDate()] : null;
+let day = currentFestivalDay && events.some(e => e.day === currentFestivalDay) ? currentFestivalDay : days.find(d => events.some(e => e.day === d)) || days[0];
 let selected = new Set(JSON.parse(localStorage.getItem(key) || '[]'));
 let picksOnly = false;
 const $ = id => document.getElementById(id);
