@@ -144,7 +144,7 @@ function showDetail(e) { const active=selected.has(idFor(e)); const tags=(e.genr
 const groupKey = value => (value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().split(/[\/&]/).map(part=>part.replace(/[^a-z0-9]/g,'')).filter(Boolean).sort().join('|');
 const overlaps = (a,b) => minutes(a.time) < endMinutes(b) && endMinutes(a) > minutes(b.time);
 function renderSchedule() {
-  const dayEvents=events.filter(e=>e.day===day), stages=[...new Set(dayEvents.map(e=>e.stage))], heatThreshold=3000;
+  const dayEvents=events.filter(e=>e.day===day), stagePriority=['Arena','Beach','Crane','Forest'], stages=[...new Set(dayEvents.map(e=>e.stage))].sort((a,b)=>{ const ai=stagePriority.indexOf(a), bi=stagePriority.indexOf(b); return (ai<0?stagePriority.length:ai)-(bi<0?stagePriority.length:bi); }), heatThreshold=3000;
   const kittin=Number(events.find(e=>e.artist==='Kittin')?.followers)||0, maxFollowers=Math.max(heatThreshold,kittin,...events.map(e=>Number(e.followers)||0)), heatSpan=Math.max(1,Math.log10(maxFollowers/heatThreshold));
   const collectiveMembers=new Map(), memberIds=new Set();
   dayEvents.filter(e=>e.is_collective).forEach(group=>{
